@@ -77,102 +77,130 @@ class AVLTree:
         child = node.getRight()
         node.setRight(child.getLeft())
         child.setLeft(node)
+        child.setParent(node.getParent())
+        node.setParent(child)
 
-        child.setHeight(max(AVLTree.__getHeight(child.getLeft()), AVLTree.__getHeight(child.getRight())) + 1)
+        parent = node.getParent()
+        if parent.getLeft() == node:
+            parent.setLeft(child)
+        elif parent.getRight() == node:
+            parent.setRight(child)
+
         node.setHeight(max(AVLTree.__getHeight(node.getLeft()), AVLTree.__getHeight(node.getRight())) + 1)
-        node = child
+        child.setHeight(max(AVLTree.__getHeight(child.getLeft()), AVLTree.__getHeight(child.getRight())) + 1)
+        return child
 
     def __rotateRight(node):
         child = node.getLeft()
         node.setLeft(child.getRight())
         child.setRight(node)
+        child.setParent(node.getParent())
+        node.setParent(child)
 
-        child.setHeight(max(AVLTree.__getHeight(child.getLeft()), AVLTree.__getHeight(child.getRight())) + 1)
         node.setHeight(max(AVLTree.__getHeight(node.getLeft()), AVLTree.__getHeight(node.getRight())) + 1)
-        node = child
+        child.setHeight(max(AVLTree.__getHeight(child.getLeft()), AVLTree.__getHeight(child.getRight())) + 1)
+        return child
 
     def __rotateLeftRight(node):
-        AVLTree.__rotateLeft(node.getLeft())
-        AVLTree.__rotateRight(node)
+        # FIXME
+        node = AVLTree.__rotateLeft(node.getLeft())
+        return AVLTree.__rotateRight(node.getParent())
     
     def __rotateRightLeft(node):
-        AVLTree.__rotateRight(node.getRight())
-        AVLTree.__rotateLeft(node)
+        node = AVLTree.__rotateRight(node.getRight()).getParent()
+        return AVLTree.__rotateLeft(node)
 
     def __rebalance(subtree):
         difference = AVLTree.__getHeight(subtree.getLeft()) - AVLTree.__getHeight(subtree.getRight())
         if difference <= 1 and difference >= -1:
-            return
+            return subtree
         elif difference >= 2:
             if AVLTree.__getHeight(subtree.getLeft().getLeft()) > AVLTree.__getHeight(subtree.getLeft().getRight()):
-                AVLTree.__rotateRight(subtree)
+                subtree = AVLTree.__rotateRight(subtree)
             else:
-                AVLTree.__rotateLeftRight(subtree)
+                subtree = AVLTree.__rotateLeftRight(subtree)
         elif difference <= -2:
             if AVLTree.__getHeight(subtree.getRight().getLeft()) > AVLTree.__getHeight(subtree.getRight().getRight()):
-                AVLTree.__rotateRightLeft(subtree)
+                subtree = AVLTree.__rotateRightLeft(subtree)
             else:
-                AVLTree.__rotateLeft(subtree)
+                subtree = AVLTree.__rotateLeft(subtree)
         subtree.setHeight(max(AVLTree.__getHeight(subtree.getLeft()), AVLTree.__getHeight(subtree.getRight())) + 1)
+        return subtree
 
     def insert(self, item):
-        def __insert(subtree, item, parent=None):
-            if subtree == None:
-                subtree = AVLTree.AVLNode(item)
-                subtree.setParent(parent)
-            elif item < subtree.getItem():
-                __insert(subtree.getLeft(), item, subtree) # FIXME: 要不要写parent=subtree?
-                AVLTree.__rebalance(subtree)
-            elif item > subtree.getItem():
-                __insert(subtree.getRight(), item, subtree)
-                AVLTree.__rebalance(subtree)
-            subtree.setHeight(max(AVLTree.__getHeight(subtree.getLeft()), AVLTree.__getHeight(subtree.getRight())) + 1)
-        
-        __insert(self.root, item)
-    
+        if self.root == None:
+            self.root = AVLTree.AVLNode(item)
+        else:
+            self.root = AVLTree.__insert(self.root, item)
+
+    def __insert(subtree, item, parent=None):
+        if item < subtree.getItem():
+            if subtree.getLeft() != None:
+                AVLTree.__insert(subtree.getLeft(), item, subtree)
+                subtree.setHeight(max(AVLTree.__getHeight(subtree.getLeft()), AVLTree.__getHeight(subtree.getRight())) + 1)
+                subtree = AVLTree.__rebalance(subtree)
+            else:
+                newTree = AVLTree.AVLNode(item)
+                newTree.setParent(subtree)
+                subtree.setLeft(newTree)
+        elif item > subtree.getItem():
+            if subtree.getRight() != None:
+                AVLTree.__insert(subtree.getRight(), item, subtree)
+                subtree.setHeight(max(AVLTree.__getHeight(subtree.getLeft()), AVLTree.__getHeight(subtree.getRight())) + 1)
+                subtree = AVLTree.__rebalance(subtree)
+            else:
+                newTree = AVLTree.AVLNode(item)
+                newTree.setParent(subtree)
+                subtree.setRight(newTree)
+        subtree.setHeight(max(AVLTree.__getHeight(subtree.getLeft()), AVLTree.__getHeight(subtree.getRight())) + 1)
+        return subtree
+
     def delete(self, item):
-        def __delete(subtree, item):
-            if subtree == None:
-                return
-            if item < subtree.getItem():
-                __delete(subtree.getLeft(), item)
-                AVLTree.__rebalance(subtree)
-            elif item > subtree.getItem():
-                __delete(subtree.getRight(), item)
-                AVLTree.__rebalance(subtree)
-            
-            elif item == subtree.getItem():
-                if subtree.getLeft() == None and subtree.getRight() == None:
-                    # subtree is a leave
-                    parent = subtree.getParent()
-                    if parent.getLeft() == subtree:
-                        parent.setLeft(None)
-                    else:
-                        parent.setRight(None)
-                    subtree = None
-                elif subtree.getLeft() != None and subtree.getRight() == None:
-                    # subtree has two children
-                    child = subtree.getLeft()
-                    while child.getRight() != None:
-                        child = child.getRight()
-                    subtree.setItem(child.getItem())
-                    __delete(subtree.getLeft(), child.getItem())
-                    AVLTree.__rebalance(subtree)
+        self.root = AVLTree.__delete(self.root, item)
+
+    def __delete(subtree, item):
+        if subtree == None:
+            return
+        if item < subtree.getItem():
+            AVLTree.__delete(subtree.getLeft(), item)
+            subtree = AVLTree.__rebalance(subtree)
+        elif item > subtree.getItem():
+            AVLTree.__delete(subtree.getRight(), item)
+            subtree = AVLTree.__rebalance(subtree)
+        
+        elif item == subtree.getItem():
+            if subtree.getLeft() == None and subtree.getRight() == None:
+                # subtree is a leave
+                parent = subtree.getParent()
+                if parent.getLeft() == subtree:
+                    parent.setLeft(None)
                 else:
-                    # subtree has one child
-                    parent = subtree.getParent()
-                    if parent.getLeft() == subtree:
-                        if subtree.getLeft() == None:
-                            parent.setLeft(subtree.getRight())
-                        else:
-                            parent.setLeft(subtree.getLeft())
+                    parent.setRight(None)
+                subtree = None
+            elif subtree.getLeft() != None and subtree.getRight() == None:
+                # subtree has two children
+                child = subtree.getLeft()
+                while child.getRight() != None:
+                    child = child.getRight()
+                subtree.setItem(child.getItem())
+                AVLTree.__delete(subtree.getLeft(), child.getItem())
+                subtree = AVLTree.__rebalance(subtree)
+            else:
+                # subtree has one child
+                parent = subtree.getParent()
+                if parent.getLeft() == subtree:
+                    if subtree.getLeft() == None:
+                        parent.setLeft(subtree.getRight())
                     else:
-                        if subtree.getLeft() == None:
-                            parent.setRight(subtree.getRight())
-                        else:
-                            parent.setRight(subtree.getLeft())                        
-            if subtree != None:
-                AVLTree.__rebalance(subtree)
+                        parent.setLeft(subtree.getLeft())
+                else:
+                    if subtree.getLeft() == None:
+                        parent.setRight(subtree.getRight())
+                    else:
+                        parent.setRight(subtree.getLeft())                        
+        if subtree != None:
+            return AVLTree.__rebalance(subtree)
+        return subtree
 
 # %%
 tree = AVLTree()
@@ -180,7 +208,9 @@ for x in [8,4,2,1,6,3,7,19,24]:
     tree.insert(x)
 for x in tree:
     print(x)
-
+tree.delete(8)
+for x in tree:
+    print(x)
 
 
 
