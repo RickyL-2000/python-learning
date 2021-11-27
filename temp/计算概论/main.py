@@ -89,6 +89,7 @@ if __name__ == '__main__':
 
     # %%
     # freq stats
+    print("10 most frequent word:")
     freq_dist = nltk.FreqDist(filtered_customized)
     freq_top10 = freq_dist.most_common(10)
     for (w, f) in freq_top10:
