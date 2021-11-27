@@ -7,7 +7,6 @@ from nltk.stem.porter import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 
 import time
-import pandas as pd
 
 # %%
 # download packages
@@ -97,9 +96,9 @@ if __name__ == '__main__':
 
     # %%
     # output csv
-    df = pd.DataFrame()
-    df['word'] = freq_dist.keys()
-    df['freq'] = freq_dist.values()
-    df = df.drop(df[df.freq <= 3].index)
-    df.to_csv("word_freq.csv", index=False)
+    with open("word_freq.csv", "w") as file:
+        file.write("word,freq\n")
+        for (w, f) in freq_dist.items():
+            if f > 3:
+                file.write(f"{w},{f}\n")
 
