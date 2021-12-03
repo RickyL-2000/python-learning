@@ -10,9 +10,9 @@ import time
 
 # %%
 # download packages
-nltk.download('stopwords')
-nltk.download('averaged_perceptron_tagger')
-nltk.download('wordnet')
+# nltk.download('stopwords')
+# nltk.download('averaged_perceptron_tagger')
+# nltk.download('wordnet')
 
 # %%
 if __name__ == '__main__':
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     # %%
     # stemming
-    stemmer = PorterStemmer()
+    stemmer = PorterStemmer()   # use porter stemmer to stem the words
     for i in range(len(tokens)):
         tokens[i] = stemmer.stem(tokens[i])
 
@@ -46,6 +46,7 @@ if __name__ == '__main__':
     pos_tags = dict(pos_tags)
 
     def get_pos(tag):
+        # make the POS tags lemmatizer-friendly
         if tag.startswith('J'):
             return wordnet.ADJ
         elif tag.startswith('V'):
@@ -61,7 +62,7 @@ if __name__ == '__main__':
     # Lemmatization
     wordnet_lemmatizer = WordNetLemmatizer()
     for i in range(len(tokens)):
-        if get_pos(pos_tags[tokens[i]]):
+        if get_pos(pos_tags[tokens[i]]):    # if not, it's other words, like articles
             tokens[i] = wordnet_lemmatizer.lemmatize(tokens[i], pos=get_pos(pos_tags[tokens[i]]))
 
     # %%
@@ -89,7 +90,7 @@ if __name__ == '__main__':
     # %%
     # freq stats
     print("10 most frequent word:")
-    freq_dist = nltk.FreqDist(filtered_customized)
+    freq_dist = nltk.FreqDist(filtered_customized)  # count appearance
     freq_top10 = freq_dist.most_common(10)
     for (w, f) in freq_top10:
         print(f"{w}: {f}")
