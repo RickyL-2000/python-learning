@@ -1,0 +1,44 @@
+1    The Python Tutorial
+
+2    Python is an easy to learn, powerful programming language.
+3    It has efficient high-level data structures and a simple but
+4    effective approach to object-oriented programming. Python’s
+5    elegant syntax and dynamic typing, together with its
+6    interpreted nature, make it an ideal language for scripting
+7    and rapid application development in many areas on most
+8    platforms.
+
+9    The Python interpreter and the extensive standard library
+10   are freely available in source or binary form for all major
+11   platforms from the Python web site, https://www.python.org/,
+12   and may be freely distributed. The same site also contains
+13   distributions of and pointers to many free third party
+14   Python modules, programs and tools, and additional
+15   documentation.
+
+16   The Python interpreter is easily extended with new functions
+17   and data types implemented in C or C++ (or other languages
+18   callable from C). Python is also suitable as an extension
+19   language for customizable applications.
+
+20   This tutorial introduces the reader informally to the basic
+21   concepts and features of the Python language and system. It
+22   helps to have a Python interpreter handy for hands-on
+23   experience, but all examples are self-contained, so the
+24   tutorial can be read off-line as well.
+
+25   For a description of standard objects and modules, see The
+26   Python Standard Library. The Python Language Reference gives
+27   a more formal definition of the language. To write
+28   extensions in C or C++, read Extending and Embedding the
+29   Python Interpreter and Python/C API Reference Manual. There
+30   are also several books covering Python in depth.
+
+31   This tutorial does not attempt to be comprehensive and cover
+32   every single feature, or even every commonly used feature.
+33   Instead, it introduces many of Python’s most noteworthy
+34   features, and will give you a good idea of the language’s
+35   flavor and style. After reading it, you will be able to read
+36   and write Python modules and programs, and you will be
+37   ready to learn more about the various Python library modules
+38   described in The Python Standard Library.
