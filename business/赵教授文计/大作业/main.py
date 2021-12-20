@@ -1,7 +1,7 @@
 # %%
 import os
 from docx import Document
-from docx.shared import Inches
+import jieba
 
 DISPLAY_LIMIT = 20
 
@@ -86,10 +86,58 @@ def process_input(file_list):
             else:
                 print("无效输入")
         
-def combine_py():
+def program_exit():
+    print("-"*40)
+    print("程序完成")
+    exit()
+
+def combine_py(file_list):
     document = Document()
-    p = document.add_paragraph('A plain paragraph having some ')
-    document.save("all_python.docx")
+
+    for filename in file_list:
+        with open(filename, "r", encoding="utf-8") as f:
+            content = f.read()
+        document.add_heading(f'file path: {filename}', level=1)
+        document.add_paragraph(content)
+    
+    if not os.path.exists("output"):
+        os.makedirs("output")
+    output_path = os.path.join("output", "all_python.docx")
+    document.save(output_path)
+    print(f"已写入文件 {output_path}")
+
+def wordfreq(file_list):
+    word_list = []
+    word_dict = {}
+
+    for filename in file_list:
+        with open(filename, "r", encoding="utf-8") as f:
+            content = f.read()
+        word_list.extend(jieba.lcut(content))
+
+    for w in word_list:
+        if len(w) == 1:
+            continue
+        if w in word_dict:
+            word_dict[w] += 1
+        else:
+            word_dict[w] = 1
+    
+    items_list = sorted(list(word_dict.items()), key=lambda x: x[1], reverse=True)
+    
+    print("展示前10个最高频的词语的频率:")
+    for i in range(10):
+        print(items_list[i][0], items_list[i][1])
+
+    if not os.path.exists("output"):
+        os.makedirs("output")
+    output_path = os.path.join("output", "词频.csv")
+
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write('word, freq\n')
+        for i in range(len(items_list)):
+            f.write(items_list[i][0] + ',' + str(items_list[i][1]) + '\n')
+    
 
 def main():
     print("程序开始运行...")
@@ -109,9 +157,7 @@ def main():
     while True:
         msg = input("输入: ")
         if msg == "q":
-            print("-"*40)
-            print("程序完成")
-            return
+            program_exit()
         elif msg == "1":
             print("-"*40)
             print("您选择合并python文件")
@@ -121,15 +167,15 @@ def main():
 
             _status, target_idxs = process_input(file_list)
             if _status == 0 and target_idxs is None:
-                print("-"*40)
-                print("程序完成")
-                return
+                program_exit()
             
             target_list = [file_list[idx] for idx in target_idxs]
 
-            print(target_idxs)
+            # print("Your chosen file indices:")
+            # print(target_idxs)
 
-            # TODO
+            combine_py(target_list)
+            program_exit()
 
             break
         elif msg == "2":
@@ -141,15 +187,14 @@ def main():
 
             _status, target_idxs = process_input(file_list)
             if _status == 0 and target_idxs is None:
-                print("-"*40)
-                print("程序完成")
-                return
+                program_exit()
             
             target_list = [file_list[idx] for idx in target_idxs]
 
-            print(target_idxs)
+            # print(target_idxs)
 
-            # TODO
+            wordfreq(target_list)
+            program_exit()
 
             break
         else:

@@ -1,7 +1,5 @@
-num = list()
-while True:
-    msg = input()
-    if msg.strip() == "":
-        break
-    num.append(msg)
-print(num)
+import sys 
+for line in sys.stdin: 
+    a=int(line) 
+    if a!=0: 
+        print(a)
