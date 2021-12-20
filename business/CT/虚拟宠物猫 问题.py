@@ -92,7 +92,7 @@ def Clock():  # 模拟24h的时钟
         pass
 
 #如果在睡觉状态要带它去活动，幸福指数减去4
-    if tick < 8 and p.status != "我再睡觉......":
+    if tick < 8 and p.status != "我在睡觉......":
         p.Happiness -= 4
         pass
 
@@ -271,11 +271,11 @@ def mainF():
             p.cur_status()
             pass
         else:
-            if exec_count >= 8:  # 8点到24点
-                orderWakePet(a)
+            if tick >= 8:  # 8点到24点
+                commandWakePet(a)
                 pass
             else:  # 0点到8点
-                orderSleepPet(a)
+                commandSleepPet(a)
                 pass
         pass
 
