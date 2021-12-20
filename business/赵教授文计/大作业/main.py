@@ -138,6 +138,8 @@ def wordfreq(file_list):
         for i in range(len(items_list)):
             f.write(items_list[i][0] + ',' + str(items_list[i][1]) + '\n')
     
+    print(f"已写入文件 {output_path}")
+    
 
 def main():
     print("程序开始运行...")
@@ -177,7 +179,6 @@ def main():
             combine_py(target_list)
             program_exit()
 
-            break
         elif msg == "2":
             print("-"*40)
             print("您选择中文词频统计")
@@ -196,7 +197,6 @@ def main():
             wordfreq(target_list)
             program_exit()
 
-            break
         else:
             print("无效输入")
             print("-"*40)
