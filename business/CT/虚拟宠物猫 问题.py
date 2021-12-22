@@ -106,7 +106,7 @@ def Clock():  # 模拟24h的时钟
     if judgeStop == False:
         global timer
         timer = threading.Timer(5, Clock)
-        timer.start
+        timer.start()
 #如果用老师给的timer，如何实现？
 
 #按照进度表输出参数
@@ -189,6 +189,7 @@ def commandSleepPet(Command):  # 宠物睡着的时候，先确定是否叫醒�
         if ans == 'y':
             global pet_Happiness
             pet_Happiness -= 4
+            pet_Happiness = rangeStatus(pet_Happiness)
             if Command == "walk":
                 pet_walk()
             elif Command == "play":
@@ -238,6 +239,7 @@ def mainF():
         elif a == "status":
             pet_cur_status()
         else:
+            # FIXME: 这或许不是一个好选择，因为叫醒后再letalone是可以睡回去的
             if tick >= 8 or (tick < 8 and pet_status != "我在睡觉......"):  # 8点到24点
                 commandWakePet(a)
             else:  # 0点到8点

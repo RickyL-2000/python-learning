@@ -3,7 +3,7 @@ import os
 from docx import Document
 import jieba
 
-DISPLAY_LIMIT = 20
+DISPLAY_LIMIT = 40
 
 def _check_suffix(path, suffix):
     filename = path.split('/')[-1]
@@ -59,13 +59,14 @@ def parse_index(file_list, msg):
 
 def process_input(file_list):
     print("该目录下所有符合要求的文件如下:")
-    # if len(file_list) > DISPLAY_LIMIT:
-    #     print(f"[显示序号 0-{DISPLAY_LIMIT}]")
+    page_num = 0
+    page_size = DISPLAY_LIMIT
+    print("-"*40)
+    print(f"页码: {page_num}")
+    print(f"[显示序号 0-{min(len(file_list), DISPLAY_LIMIT)}]")
+    for i in range(page_num*page_size, min((page_num+1)*page_size, len(file_list))):
+        print(f"{i}".ljust(5) + file_list[i])
 
-    for i, filename in enumerate(file_list):
-        print(f"{i}".ljust(5) + filename)
-
-    # page_num = 0    # TODO
     target_idxs = []
     
     while True:
@@ -78,6 +79,24 @@ def process_input(file_list):
             return 0, list(range(len(file_list)))
         elif msg == "ok":
             return 0, target_idxs
+        elif msg == "u":
+            print("-"*40)
+            if page_num == 0: print("已经是第一页！")
+            page_num = max(0, page_num-1)
+            print(f"页码: {page_num}")
+            print(f"[显示序号 {page_num*page_size}-{min((page_num+1)*page_size, len(file_list))}]")
+            for i in range(page_num*page_size, min((page_num+1)*page_size, len(file_list))):
+                print(f"{i}".ljust(5) + file_list[i])
+            continue
+        elif msg == "d":
+            print("-"*40)
+            if page_num == 0: print("已经是最后一页！")
+            page_num = min(len(file_list) // DISPLAY_LIMIT, page_num+1)
+            print(f"页码: {page_num}")
+            print(f"[显示序号 {page_num*page_size}-{min((page_num+1)*page_size, len(file_list))}]")
+            for i in range(page_num*page_size, min((page_num+1)*page_size, len(file_list))):
+                print(f"{i}".ljust(5) + file_list[i])
+            continue
         else:
             _status, idx_lst = parse_index(file_list, msg)
             if _status == 0:
@@ -201,16 +220,5 @@ def main():
             print("无效输入")
             print("-"*40)
 
-def test():
-    print("hhhh")
-    file_list = []
-    find_files(file_list, "data", suffix="py")
-    for filename in file_list:
-        print(filename)
-    print("-"*40)
-    print(len(file_list))
-    print(len(set(file_list)))
-
-main()
-# combine_py()
-# test()
+if __name__ == '__main__':
+    main()

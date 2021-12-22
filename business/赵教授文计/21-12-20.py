@@ -18,27 +18,25 @@ me
 """
 
 list1 = []
-list3 = []
-list4=[]
 listout = []
-# import sys
-# for a in sys.stdin:
-#     list1.append(a)
+import sys
+for a in sys.stdin:
+    list1.append(a.strip())
 
-list1 = ["about", "send", "about", "me"]
-    
-list2 = list(set(list1))
-list2.sort()
+# list1 = ["about", "send", "about", "me"]
 
-for i in range(len(list2)):
-    list3.append(list1.count(list2[i]))
+wordfreq = {}
+for w in list1:
+    if w in wordfreq:
+        wordfreq[w] += 1
+    else:
+        wordfreq[w] = 1
 
-for i in range(len(list2)):
-    list4.append((list3[i],list2[i]))
+list4 = list(wordfreq.items())
 
-list4.sort(key=lambda x: (-x[0], x[1]))
+list4.sort(key=lambda x: (x[0], -x[1]))
 
-for i in range(len(list2)):
-    listout.append(str(list4[i][0])+' '+str(list4[i][1]))
+for i in range(len(list4)):
+    listout.append(str(list4[i][1])+' '+str(list4[i][0]))
 
 print('\n'.join(str(i) for i in listout))
