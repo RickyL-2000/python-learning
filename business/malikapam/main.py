@@ -64,7 +64,7 @@ def clock():
 
     cur_time = (cur_time + 1) % 24
 
-    print_current_status()
+    # print_current_status()
         
     # 当时间计数到23时归零，循环输出时间
     global timer
@@ -134,6 +134,7 @@ def main():
                 commandWakePet(command)
             else:  # 0点到8点
                 if command == "letalone":
+                    pass
                     updates_status("我在睡觉......")
                 elif cat_status != "我在睡觉......":
                     commandWakePet(command)
