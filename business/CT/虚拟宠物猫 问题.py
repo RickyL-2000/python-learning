@@ -153,17 +153,18 @@ def pet_cur_status():
     print("{}点".format(tick))
     print("我当前的状态:", end="")
     print(pet_status)
+
     print("Happiness:   Sad", end="")
     printInfo(pet_Happiness)
-    print("Happy({})".format(pet_Happiness))
+    print("Happy({:0>3})".format(pet_Happiness))
 
     print("Hunger:      Full", end="")
     printInfo(pet_Hunger)
-    print("Hungry({})".format(pet_Hunger))
+    print("Hungry({:0>3})".format(pet_Hunger))
 
     print("Health:      Sick", end="")
     printInfo(pet_Health)
-    print("Healthy({})\n".format(pet_Health))
+    print("Healthy({:0>3})\n".format(pet_Health))
 
 def commandWakePet(Command):  # 宠物醒着的时候，运行命令
     if Command == "walk":
@@ -183,7 +184,7 @@ def commandWakePet(Command):  # 宠物醒着的时候，运行命令
 def commandSleepPet(Command):  # 宠物睡着的时候，先确定是否叫醒，再运行命令
     if Command == "letalone":
         pet_sleep()
-        print(pet_status)
+        # print(pet_status)
     else:
         ans = input("你确定要吵醒我吗？我在睡觉，你要是坚持吵醒我，我会不高兴的！（y表示是/其他表示不是）")
         if ans == 'y':
