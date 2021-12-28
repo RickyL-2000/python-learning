@@ -8,14 +8,14 @@ try:
         content = content.split()
 except:
     # content = [30, 20, 20, 4, "我醒着但我很无聊......"]
-    # content = [30, 20, 20, 4, "我在睡觉......"]
-    content = [
-        random.randint(0, 100),
-        random.randint(0, 100),
-        random.randint(0, 100),
-        random.randint(8, 23),
-        random.choice(["我醒着但我很无聊......", "我在散步......", "我在玩耍......", "我在吃饭......", "我在看医生......"])
-    ]
+    content = [30, 20, 20, 4, "我在睡觉......"]
+    # content = [
+    #     random.randint(0, 100),
+    #     random.randint(0, 100),
+    #     random.randint(0, 100),
+    #     random.randint(8, 23),
+    #     random.choice(["我醒着但我很无聊......", "我在散步......", "我在玩耍......", "我在吃饭......", "我在看医生......"])
+    # ]
 
 # content = [30, 20, 20, 2, "我在睡觉......", ]
 
