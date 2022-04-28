@@ -7,7 +7,7 @@ all_status = {
     "walk": "我在散步......",
     "play": "我在玩耍......",
     "feed": "我在吃饭......",
-    "seedoctor": "我在看医生......",
+    "see doctor": "我在看医生......",
     "sleep": "我在睡觉...",
     "idle": "我醒着但我很无聊......"
 }
@@ -68,7 +68,7 @@ def clock():
         cat_happiness += 1
     elif cat_status =="feed":
         cat_hunger -= 3
-    elif cat_status =="seedoctor":
+    elif cat_status =="see doctor":
         cat_health += 4
 
     if cat_hunger > 80 or cat_hunger < 20:
@@ -101,9 +101,9 @@ def command_cat(command):
     elif command == "feed":
         cat_status = "feed"
         print(all_status["feed"] + "\n")
-    elif command == "seedoctor":
-        cat_status = "seedoctor"
-        print(all_status["seedoctor"] + "\n")
+    elif command == "see doctor":
+        cat_status = "see doctor"
+        print(all_status["see doctor"] + "\n")
     elif command == "letalone":
         # 假如此时是醒着的
         cat_status = "idle"
