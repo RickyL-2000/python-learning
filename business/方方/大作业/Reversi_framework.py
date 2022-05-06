@@ -99,20 +99,31 @@ def check_board():
         return False
 
 
-
 # 检查颜色为color的棋子落子(row, col)是否有效
 def check_legal_move(row, col, color):
     ''' 检查颜色为color的棋子落子(row, col)是否有效。
         输入：落子的位置，行row, 列col，以及颜色color
         输出：如果有效，则返回True，否则返回False。 '''
     # ====== Begin =======
-
-
-
-
-
-
-
+    oppon = "X" if color == "O" else "O"
+    if board[row][col] == ".":
+        for dir in direction:   # 八个方向
+            met_oppon = False   # 中途是否已经遇到了对手
+            r, c = row, col
+            while True:
+                r, c = r + dir[0], c + dir[1]
+                if not (0 <= r < n and 0 <= c < n):     # 有效坐标
+                    break
+                if board[r][c] == oppon:    # 遇到对手的棋子
+                    met_oppon = True
+                    continue
+                if board[r][c] == ".":  # 中途遇到空格，失败
+                    break
+                if board[r][c] == color:    # 遇到自己的棋子
+                    if met_oppon:
+                        return True     # 若曾遇到过对手棋子，则为有效
+                    break
+    return False
     # ====== End =======
 
 
@@ -132,13 +143,29 @@ def flip(row, col, color):
         该函数不需要返回值
     '''
     # ====== Begin =======
-
-
-
-
-
-
-
+    oppon = "X" if color == "O" else "O"
+    candidates = []     # 保存八个方向的所有可以翻转的坐标
+    for dir in direction:
+        candidate = []  # 其中一个方向的所有可以翻转的坐标
+        met_oppon = False
+        r, c = row, col
+        while True:
+            r, c = r + dir[0], c + dir[1]
+            if not (0 <= r < n and 0 <= c < n):
+                break
+            if board[r][c] == oppon:
+                met_oppon = True
+                candidate.append((r, c))
+                continue
+            if board[r][c] == ".":
+                break
+            if board[r][c] == color:
+                if met_oppon:
+                    candidates.append(candidate)
+                break
+    for candidate in candidates:
+        for r, c in candidate:
+            board[r][c] = color
     # ====== End =======
 
 
@@ -168,14 +195,26 @@ def position_score(row, col, color):
         输出：返回整型分值score '''
     score = 0
     # ====== Begin =======
-
-
-
-
-
+    global board
+    oppon = "X" if color == "O" else "O"
+    temp_board = copy_board(board)      # 保存原棋盘
+    tb = [c for line in temp_board for c in line]
+    board[row][col] = color
+    flip(row, col, color)
+    b = [c for line in board for c in line]
+    score = tb.count(oppon) - b.count(oppon)
+    board = copy_board(temp_board)
     # ====== End =======            
     return score
 
+def copy_board(old_board):
+    # new_board <- old_board
+    new_board = []
+    for row in range(n):
+        new_board.append([])
+        for col in range(n):
+            new_board[row].append(old_board[row][col])
+    return new_board
 
 # 计算机下棋
 def computer_move(color):
