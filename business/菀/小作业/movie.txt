@@ -1,0 +1,10 @@
+#年份,电影名,产地,票房,导演
+2013,Rush,US/UK,2.44,Ron Howard
+2001,A Beautiful Mind,US,3.11,Ron Howard
+
+2008,Hunger,UK,1.54,Steve McQueen
+2009,Avatar,US,28.47,James Cameron
+
+2019,Avengers: Endgame,US,27.97,Anthony Russo
+1997,Titanic,US/MX/AUS/CAN,22.01,James Cameron
+

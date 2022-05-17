@@ -23,6 +23,5 @@ if __name__ == '__main__':
                         hosts_dict[line_lst[0]].append(domain)
                     else:
                         hosts_dict[line_lst[0]] = [domain]
-    for key in hosts_dict:
-        print(f"{key}: {hosts_dict[key]}")
+    print(hosts_dict)
     
