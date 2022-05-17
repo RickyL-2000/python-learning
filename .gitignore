@@ -1,5 +1,5 @@
-projects/alian_invasion/__pycache__/*.pyc
-/.idea
+__pycache__
+.idea
 
 # data
 business/赵教授文计/大作业/data

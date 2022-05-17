@@ -33,8 +33,13 @@ Valid
 """
 import re
 
+# emmmm
+
 while True:
-    email = input("Enter an email address: ").strip()
+    email = input("Enter an email address: ")
+    if email == "":
+        break
+    email = email.strip()
     if re.match(r"^([A-Za-z0-9]+[-._])*[A-Za-z0-9]+@(([A-Za-z0-9]+[-])*[A-Za-z0-9]+\.)*[A-Za-z]{2,3}$", email):
         print("Valid")
     else:

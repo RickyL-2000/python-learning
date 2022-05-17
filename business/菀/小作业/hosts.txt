@@ -1,0 +1,10 @@
+           # The following lines are desirable for IPv4 capable hosts
+           127.0.0.1       localhost
+   
+           # 127.0.1.1 is often used for the FQDN of the machine
+           127.0.1.1       thishost.mydomain.org  thishost # localhost
+           192.168.1.10    foo.mydomain.org       foo
+           192.168.1.10    mail.mydomain.org      mail ms
+           192.168.1.13    bar.mydomain.org       bar
+           1942.1.12.3     wrong.mydomain.org    # ignore this line
+

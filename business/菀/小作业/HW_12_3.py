@@ -40,7 +40,10 @@ def check_subject(subject):
     return False
 
 while True:
-    subject = input("Enter an email subject: ").strip()
+    subject = input("Enter an email subject: ")
+    if subject == "":
+        break
+    subject = subject.strip()
     if check_subject(subject):
         print("Urgent!")
     else:
